@@ -22,8 +22,26 @@ exposed as the `GH_TOKEN` environment variable.
 
 ## Make it run 🔥
 
+```sh
+GH_TOKEN=XXXXXX ./light-on.sh my-second-github-account
 ```
-./light.sh my-second-github-account
+
+## When in doubt use -h
+
+```sh
+$ ./light-on.sh -h
+usage: ./light-on.sh [-h] <GitHub username>
+  -g    set local git repository for activity shadowing. Default: '.'
+  -b    set local git branch for activity shadowing. Default: 'shadow/<GitHub username>'
+  -d    dry-run
+  -h    show help
+env. var. overrides:
+  GH_TOKEN   - GH Personal access token, used for GH API lookups. Default: <empty>
+  DATE_START - GH graph to be synced start date. Default: 2021-10-17T00:00:00.000+00:00
+  DATE_END   - GH graph to be synced end date, uses "today" when empty. Default: <empty>
+  DEBUG      - When set, prints out debug messages
+examples:
+  GH_TOKEN='xxxxxx' ./light-on.sh octocat
 ```
 
 ## FAQ
