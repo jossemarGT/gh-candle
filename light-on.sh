@@ -3,9 +3,9 @@
 set -e
 
 GH_USER=''
-TARGET_DIR="."
-TARGET_BRANCH=''
-DRY_RUN=''
+: "${TARGET_DIR='.'}"
+: "${TARGET_BRANCH:=}"
+: "${DRY_RUN:=}"
 : "${TMP_DIR:=}"
 : "${DEBUG:=}"
 
@@ -45,6 +45,10 @@ debug() {
 
 warn() {
   echo '[WARN] ' "$@" >&2
+}
+
+error() {
+  echo '[ERROR] ' "$@" >&2
 }
 
 fatal() {
@@ -186,7 +190,7 @@ shift $((OPTIND - 1))
 GH_USER="${1}"
 
 if [ -z "${GH_USER}" ]; then
-  usage
+  error "Missing <GitHub handle> argument"
   exit 1
 fi
 

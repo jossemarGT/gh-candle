@@ -24,7 +24,9 @@ First, thank you for consider contributing into this tool!
 
 * Use standard POSIX shell (No bash, zsh, fish magic allowed)
 * Always check your changes using `shellcheck`
-* When an user value is optional, it should be an option/flag parsed by `getops`
+* When an user value is optional, it should be an option flag parsed by `getops`
+* When an user value is retrived through option flag, it should be overridable
+  with an environment variables
 
 ### Markdown
 

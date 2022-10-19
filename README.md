@@ -1,6 +1,6 @@
 # GH Candle 🕯️
 
-Generate contribution graphs "shadows" from other GitHub accounts *that belong to you*.
+Generate contribution graphs *shadows* from other GitHub accounts *that belong to you*.
 
 Let's say by whims of fate, you had to create one or more separate GitHub
 accounts that reflect most of your activity, and now your personal one looks so
@@ -8,7 +8,7 @@ sad. Then you wonder if only there was a way to synchronize GH contribution
 graphs... Well, say no more! Although there is no official way to do so, there
 are ways to mimic it with *GH candle* 🕯️.
 
-## Prerequisites
+## Prerequisites 🔔
 
 GH candle should work as long you have the following tools installed on your
 machine:
@@ -22,8 +22,19 @@ exposed as the `GH_TOKEN` environment variable.
 
 ## Make it run 🔥
 
+You could clone this repository then run the script locally like this
+
 ```sh
 GH_TOKEN=XXXXXX ./light-on.sh my-second-github-account
+```
+
+Or you could inmediately execute it right after you fetch it from internet, like
+this
+
+```sh
+# Always check the script, at least in your web brower, prior running it. Be wary of MiM attacks ;)
+export GH_TOKEN=XXXXXX
+curl -sfL https://raw.githubusercontent.com/jossemarGT/gh-candle/master/light-on.sh | sh -s my-second-github-account
 ```
 
 ## When in doubt use -h
