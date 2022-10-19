@@ -23,16 +23,18 @@ DRY_RUN=''
 : "${DATE_END:=}"
 
 usage() {
-  echo "usage: $0 [-h] <GitHub username>
+  echo "usage: $0 [-b <git branch>] [-g <git path>] [-d] [-h] <GitHub handle>
   -g    set local git repository for activity shadowing. Default: '$TARGET_DIR'
-  -b    set local git branch for activity shadowing. Default: 'shadow/<GitHub username>'
+  -b    set local git branch for activity shadowing. Default: 'shadow/<GitHub handle>'
   -d    dry-run
   -h    show help
-env. var. overrides:
+
+environment variables overrides:
   GH_TOKEN   - GH Personal access token, used for GH API lookups. Default: <empty>
   DATE_START - GH graph to be synced start date. Default: ${DATE_START}
   DATE_END   - GH graph to be synced end date, uses \"today\" when empty. Default: <empty>
   DEBUG      - When set, prints out debug messages
+
 examples:
   GH_TOKEN='xxxxxx' $0 octocat"
 }
