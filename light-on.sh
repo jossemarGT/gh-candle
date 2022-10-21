@@ -2,25 +2,19 @@
 
 set -e
 
-GH_USER=''
-: "${TARGET_DIR='.'}"
+GH_USER=
+: "${TARGET_DIR=.}"
 : "${TARGET_BRANCH:=}"
 : "${DRY_RUN:=}"
 : "${TMP_DIR:=}"
 : "${DEBUG:=}"
-
-# A year ago BSD date
-# date -v '-1y'  '+%Y-%m-%dT00:00:00.000+00:00'
-#
-# A year ago GNU date
-# date '+%Y-%m-%dT00:00:00.000+00:00' -d'1 year ago'
-#
-# TODO: Consider GNU/BSD x-compatibility
-# it could be done by looking up 'GNU coreutils' string within the binary
-# strings $(command -v date) | grep -q 'GNU coreutils'
-#
-: "${DATE_START:=$(date '+%Y-%m-%dT00:00:00.000+00:00' -d'1 year ago')}"
 : "${DATE_END:=}"
+
+if strings "$(command -v date)" | grep -q 'GNU coreutils'; then
+  : "${DATE_START:=$(date '+%Y-%m-%dT00:00:00.000+00:00' -d'1 year ago')}"
+else
+  : "${DATE_START:=$(date -v '-1y' '+%Y-%m-%dT00:00:00.000+00:00')}"
+fi
 
 usage() {
   echo "usage: $0 [-b <git branch>] [-g <git path>] [-d] [-h] <GitHub handle>
@@ -65,7 +59,7 @@ check_dependencies() {
 }
 
 check_git_target() {
-  GIT_DIR="$(realpath "${TARGET_DIR}")/.git"
+  GIT_DIR="${TARGET_DIR}/.git"
 
   if [ -d "${GIT_DIR}" ]; then
     GIT_DIR="${GIT_DIR}" git rev-parse --git-dir >/dev/null 2>&1 || fatal "${TARGET_DIR} is not a valid git repository"
@@ -116,7 +110,7 @@ query_github() {
 EOF
 
   if [ -z "${DATE_END}" ]; then
-    sed -i '/to:/d' "${TMP_DIR}/query.graphql"
+    sed -i -e '/to:/d' "${TMP_DIR}/query.graphql"
   fi
 
   GRAPHQL_QUERY="$(cat "${TMP_DIR}/query.graphql")"
