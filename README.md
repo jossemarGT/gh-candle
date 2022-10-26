@@ -5,12 +5,14 @@ your activity, and now your personal GH contribution graph looks quite sad...
 Say no more! There is a way to "synchronize" those activities with *GH candle*
 🕯️.
 
-<!-- TODO: Before and after image here -->
+<!-- Turns out you can use gists for these blobs ;) -->
+![GH Contribution Graph transformation](https://gist.githubusercontent.com/jossemarGT/04f6590ad9771de163a50c79214cd544/raw/f576ad287375b1826cfa73c6b76040a616f72857/contrib-graph-transform.gif)
+<!-- You say mistake in the gif, I call it easter egg! -->
 
-Before we continue, I must confess that there is no *simple* way of fully
-synchronizing GH contribution graphs, and this tool does not do that exactly. In
-reality, *GH candle* 🕯️ simply casts other GH profile activity into yours, you
-guessed it, like shadow puppets done by your hand in front of a candle.
+**Note**: There is no *official* way to fully synchronize GH contribution
+graphs, and this tool is no exception to that fact. Instead *GH candle* 🕯️
+projects other GH profiles' activity into yours, you guessed it, like shadow
+puppets cast by your hands in front of a candle.
 
 ## Make it run 🔥
 
@@ -30,15 +32,11 @@ curl -sfL https://raw.githubusercontent.com/jossemarGT/gh-candle/master/light-on
 
 ## Prerequisites 🔔
 
-GH candle should work as long you have the following tools installed on your
-machine:
+GH candle should work as long you have the following setup in your machine:
 
-- `git` - <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>
-- `gh` - <https://cli.github.com/manual/installation>
-
-Also the tool assumes you already have a
-[GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
-exposed as the `GH_TOKEN` environment variable.
+- `git` installed - <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>
+- `gh` installed - <https://cli.github.com/manual/installation>
+- `GH_TOKEN` environment variable with a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) that has read-only access.
 
 ## When in doubt use -h
 
@@ -59,3 +57,11 @@ environment variables overrides:
 examples:
   GH_TOKEN='xxxxxx' ./light-on.sh octocat
 ```
+
+## Colophon
+
+- The `light-on.sh` script was inspired by @[kefimochi](https://github.com/kefimochi)'s
+  template repository [sync-contribution-graph](https://github.com/kefimochi/sync-contribution-graph)
+- The gift on this document was generated with `transitions` utility from
+  [Fred's ImageMagick Scripts](http://www.fmwconcepts.com/imagemagick/index.php)
+- <!-- 👾 All your base are belong to us 👾 -->
