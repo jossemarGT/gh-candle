@@ -45,13 +45,14 @@ $ ./light-on.sh -h
 usage: ./light-on.sh [-b <git branch>] [-g <git path>] [-d] [-h] <GitHub handle>
   -g    set local git repository for activity shadowing. Default: '.'
   -b    set local git branch for activity shadowing. Default: 'shadow/<GitHub handle>'
+  -k    skip initializing git repository
   -d    dry-run
   -h    show help
 
 environment variables overrides:
-  GH_TOKEN   - GH Personal access token, used for GH API lookups. Default: <empty>
-  DATE_START - GH graph to be synced start date. Default: 2021-10-18T00:00:00.000+00:00
-  DATE_END   - GH graph to be synced end date, uses "today" when empty. Default: <empty>
+  GH_TOKEN   - GH Personal access token used for GH API lookups. Fails when empty.
+  DATE_START - GH graph to be synced start date. Uses "a year ago" when empty.
+  DATE_END   - GH graph to be synced end date. Uses "today" when empty.
   DEBUG      - When set, prints out debug messages
 
 examples:

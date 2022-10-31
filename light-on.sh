@@ -9,6 +9,7 @@ GH_USER=
 : "${TMP_DIR:=}"
 : "${DEBUG:=}"
 : "${DATE_END:=}"
+: "${SKIP_GIT_INIT:=}"
 
 if strings "$(command -v date)" | grep -q 'GNU coreutils'; then
   : "${DATE_START:=$(date '+%Y-%m-%dT00:00:00.000+00:00' -d'1 year ago')}"
@@ -20,17 +21,36 @@ usage() {
   echo "usage: $0 [-b <git branch>] [-g <git path>] [-d] [-h] <GitHub handle>
   -g    set local git repository for activity shadowing. Default: '$TARGET_DIR'
   -b    set local git branch for activity shadowing. Default: 'shadow/<GitHub handle>'
+  -k    skip initializing git repository
   -d    dry-run
   -h    show help
 
 environment variables overrides:
-  GH_TOKEN   - GH Personal access token, used for GH API lookups. Default: <empty>
-  DATE_START - GH graph to be synced start date. Default: ${DATE_START}
-  DATE_END   - GH graph to be synced end date, uses \"today\" when empty. Default: <empty>
+  GH_TOKEN   - GH Personal access token used for GH API lookups. Fails when empty.
+  DATE_START - GH graph to be synced start date. Uses \"a year ago\" when empty.
+  DATE_END   - GH graph to be synced end date. Uses \"today\" when empty.
   DEBUG      - When set, prints out debug messages
 
 examples:
   GH_TOKEN='xxxxxx' $0 octocat"
+}
+
+next_steps() {
+  _MAIN_BRANCH=$(git config --global --get init.defaultBranch || echo '<main branch>')
+
+  echo "
+
+    )
+   (_)
+  .-'-.   Local shadow generation succeded! Please proceed with the following steps to update GH graph:
+  |   |
+  |   |     * cd ${TARGET_DIR}
+  |   |     * git checkout ${_MAIN_BRANCH}
+  |   |     * git merge ${TARGET_BRANCH}
+  |   |     * git push origin ${_MAIN_BRANCH}
+  |   |
+  \`---'
+"
 }
 
 debug() {
@@ -58,13 +78,28 @@ check_dependencies() {
   done
 }
 
+initialize_git_target() {
+  _DIR="${1}"
+
+  if [ ! -d "${_DIR}" ]; then
+    warn "${_DIR} will be created"
+    $DRY_RUN mkdir -p "${_DIR}"
+  fi
+
+  $DRY_RUN cd "${_DIR}"
+  $DRY_RUN git init
+  $DRY_RUN git commit --allow-empty -m "Initial commit"
+  $DRY_RUN cd -
+}
+
 check_git_target() {
   GIT_DIR="${TARGET_DIR}/.git"
 
   if [ -d "${GIT_DIR}" ]; then
     GIT_DIR="${GIT_DIR}" git rev-parse --git-dir >/dev/null 2>&1 || fatal "${TARGET_DIR} is not a valid git repository"
   else
-    fatal "${TARGET_DIR} is not a git repository"
+    [ -z "${SKIP_GIT_INIT}" ] || fatal "${TARGET_DIR} is not a git repository"
+    initialize_git_target "${TARGET_DIR}"
   fi
 }
 
@@ -155,9 +190,11 @@ main() {
   query_github "${TMP_DIR}/response.txt"
 
   generate_shadow_activity "${TMP_DIR}/response.txt"
+
+  next_steps
 }
 
-while getopts 'b:dg:h' c; do
+while getopts 'b:dg:hk' c; do
   case "${c}" in
   b)
     TARGET_BRANCH="${OPTARG}"
@@ -171,6 +208,9 @@ while getopts 'b:dg:h' c; do
   h)
     usage
     exit 0
+    ;;
+  k)
+    SKIP_GIT_INIT='y'
     ;;
   *)
     usage
